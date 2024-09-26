@@ -13,19 +13,14 @@ public class Frogger {
     
     // Field for task 2. Anything to add/change?
     private final Records records;
-    private String firstName, lastName, phoneNumber, zipCode, state, gender;
-
+    private final FroggerID froggerID;
+    //long
     public Frogger(Road road, int position, Records records, String firstName, String lastName, String phoneNumber,
     String zipCode, String state, String gender) {
+        froggerID = new FroggerID(firstName, lastName, phoneNumber, zipCode,state,gender);
         this.road = road;
         this.position = position;
         this.records = records;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.zipCode = zipCode;
-        this.state = state;
-        this.gender = gender;
     }
 
     /**
@@ -36,7 +31,11 @@ public class Frogger {
      */
     public boolean move(boolean forward) {
         int nextPosition = this.position + (forward ? 1 : -1);
-        if (!isValid(nextPosition) || isOccupied(nextPosition)) {
+        //Feature envy
+        // if (!isValid(nextPosition) || isOccupied(nextPosition)) {
+        //     return false;
+        // }
+        if(!road.canMove(nextPosition)) {
             return false;
         }
         this.position = nextPosition;
@@ -44,16 +43,16 @@ public class Frogger {
     }
 
     // TODO: Do you notice any issues here?
-    public boolean isOccupied(int position) {
-        boolean[] occupied = this.road.getOccupied();
-        return occupied[position];
-    }
+    // public boolean isOccupied(int position) {
+    //     boolean[] occupied = this.road.getOccupied();
+    //     return occupied[position];
+    // }
     
-    public boolean isValid(int position) {
-        if (position < 0) return false;
-        boolean[] occupied = this.road.getOccupied();
-        return position < occupied.length;
-    }
+    // public boolean isValid(int position) {
+    //     if (position < 0) return false;
+    //     boolean[] occupied = this.road.getOccupied();
+    //     return position < occupied.length;
+    // }
 
     /**
      * Records Frogger to the list of records.
@@ -61,7 +60,7 @@ public class Frogger {
      * @return true if record successful, else false.
      */
     public boolean recordMyself() {
-      boolean success = records.addRecord(firstName, lastName, phoneNumber, zipCode, state, gender);
+      boolean success = records.addRecord(froggerID);
       return success;
     }
 
